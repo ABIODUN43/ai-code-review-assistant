@@ -24,19 +24,17 @@ Evaluation + Showcase (README, screenshots, demo repo)
 
 SET UP INSTRUCTIONS
 1. Clone the Repository
-git clone https://github.com/your-username/ai-code-review-assistant.git
+git clone https://github.com/ABIODUN43/ai-code-review-assistant.git
 cd ai-code-review-assistant
 
 2. Create Virtual Environment
 python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
+venv\Scripts\activate   
 
 3. Install Dependencies
 pip install -r requirements.txt
 
 4. Run Static Tools
-
 Test on a file test.py:
 
 pylint test.py
