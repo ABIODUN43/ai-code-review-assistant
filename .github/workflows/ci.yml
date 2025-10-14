@@ -1,11 +1,10 @@
-
 name: CI Pipeline (Docker)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   lint_and_test:
@@ -22,7 +21,7 @@ jobs:
       run: |
         docker run --rm ai-code-review-assistant bash -c "
           echo '🔍 Running lint checks...' &&
-          pylint **/*.py &&
+          pylint \$(find . -name '*.py') &&
           flake8 . &&
           bandit -r . &&
           echo '✅ Lint checks passed!' &&
