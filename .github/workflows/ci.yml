@@ -17,15 +17,17 @@ jobs:
     - name: Build Docker image
       run: docker build -t ai-code-review-assistant .
 
-    - name: Run lint + tests inside Docker
+    - name: Run lint + tests + pre-commit inside Docker
       run: |
         docker run --rm ai-code-review-assistant bash -c "
+          echo '🔍 Running pre-commit checks...' &&
+          pre-commit run --all-files || true &&
           echo '🔍 Running lint checks...' &&
           pylint src tests *.py || true &&
           flake8 . &&
           bandit -r . &&
-          echo '✅ Lint checks passed!' &&
+          mypy src || true &&
+          echo '✅ Lint & pre-commit checks complete!' &&
           echo '🧪 Running tests...' &&
           PYTHONPATH=src pytest -vv
         "
-

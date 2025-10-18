@@ -1,18 +1,21 @@
-# Use a lightweight Python 3.10 image
+# Use lightweight Python base image
 FROM python:3.10-slim
 
 # Set working directory inside container
 WORKDIR /app
 
-# Copy only requirements first (for caching)
+# Copy requirements file and install dependencies
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project
+# Install pre-commit explicitly (to be safe)
+RUN pip install --no-cache-dir pre-commit
+
+# Copy the rest of the repo
 COPY . .
 
-# Default command when container runs
-CMD ["bash"]
+# Ensure pre-commit hooks are installed in container
+RUN pre-commit install --install-hooks || true
 
+# Default command
+CMD ["bash"]
