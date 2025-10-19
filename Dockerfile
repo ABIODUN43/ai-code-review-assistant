@@ -1,6 +1,14 @@
 # Use lightweight Python base image
 FROM python:3.10-slim
 
+# Install system build tools (needed for some Python deps)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    make \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set working directory inside container
 WORKDIR /app
 

@@ -3,4 +3,5 @@ flake8
 bandit
 pytest
 black
+mypy
 pre-commit
