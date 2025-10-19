@@ -19,7 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install pre-commit explicitly (safety net)
 RUN pip install --no-cache-dir pre-commit
 
-COPY ..
+# Copy all project files into container
+COPY . /app
 
 # Install hooks (non-fatal if none exist yet)
 RUN pre-commit install --install-hooks || true
