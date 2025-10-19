@@ -1,29 +1,27 @@
-# Use lightweight Python base image
 FROM python:3.10-slim
 
-# Install system build tools (needed for some Python deps)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     make \
     libffi-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory inside container
 WORKDIR /app
 
-# Copy requirements file and install dependencies
+# Upgrade pip/setuptools/wheel before installing deps
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install pre-commit explicitly (to be safe)
+# Install pre-commit explicitly (safety net)
 RUN pip install --no-cache-dir pre-commit
 
-# Copy the rest of the repo
 COPY . .
 
-# Ensure pre-commit hooks are installed in container
+# Install hooks (non-fatal if none exist yet)
 RUN pre-commit install --install-hooks || true
 
-# Default command
 CMD ["bash"]
