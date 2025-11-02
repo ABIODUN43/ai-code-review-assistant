@@ -1,2 +1,79 @@
 [MASTER]
-init-hook='import sys, site; sys.path.extend(site.getsitepackages())'
+# Allow pylint to detect packages installed in both global and virtual environments.
+init-hook='import sys, site, os; sys.path.extend(site.getsitepackages() + [os.getcwd()])'
+
+# Files/directories to ignore during linting.
+ignore=venv,build,dist,__pycache__,.git,.mypy_cache,.pytest_cache
+
+# Set the maximum allowed line length (aligns with flake8 & black defaults).
+max-line-length=88
+
+# Allow usage of relative imports for modular structure.
+extension-pkg-whitelist=pandas,numpy
+
+# Use multiple cores if available.
+jobs=2
+
+
+[MESSAGES CONTROL]
+# Disable overly pedantic or redundant rules.
+disable=
+    C0114,  # missing-module-docstring
+    C0115,  # missing-class-docstring
+    C0116,  # missing-function-docstring
+    R0903,  # too-few-public-methods
+    W1203,  # logging-format-interpolation
+    W0611,  # unused import (useful when using __init__.py imports)
+    R0801,  # duplicate-code (too strict for tests)
+    R0913,  # too-many-arguments
+    R0914,  # too-many-locals
+    R0915,  # too-many-statements
+    C0103,  # variable name doesn’t conform to snake_case (sometimes fine)
+    E0401,  # import-error (handled by init-hook)
+
+
+[REPORTS]
+# Disable Pylint's text report summary (pre-commit doesn't need it).
+output-format=colorized
+reports=no
+score=yes
+
+
+[FORMAT]
+# Keep consistent formatting with Black and Flake8.
+max-line-length=88
+indent-string='    '
+
+
+[TYPECHECK]
+# Allow dynamic module imports used in tests and data pipelines.
+ignored-modules=pandas,numpy,pytest,sqlite3
+ignored-classes=SQLObject, optparse.Values
+
+
+[BASIC]
+# Enforce lowercase function names, CamelCase for classes.
+good-names=i,j,k,ex,Run,_,db,fp,id
+bad-names=foo,bar,baz,todo
+
+
+[DESIGN]
+# Tweak limits for small scripts and pipelines.
+max-args=10
+max-attributes=10
+max-branches=15
+max-statements=60
+
+
+[SIMILARITIES]
+# Don’t warn about duplicate code in tests or generated scripts.
+ignore-comments=yes
+ignore-docstrings=yes
+min-similarity-lines=8
+
+
+[IMPORTS]
+# Sort imports in a readable way.
+known-standard-library=sys,os,datetime,sqlite3,unittest
+known-third-party=pandas,numpy,pytest
+known-first-party=src
