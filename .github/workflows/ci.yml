@@ -28,5 +28,5 @@ jobs:
           echo '🧪 Running tests...' &&
           PYTHONPATH=src pytest -vv &&
           echo '📊 Collecting reports...' &&
-          python collect_reports.py
+          python src/data/collect_reports.py
         "
