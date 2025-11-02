@@ -29,7 +29,7 @@ cd ai-code-review-assistant
 
 2. Create Virtual Environment
 python -m venv venv
-venv\Scripts\activate   
+venv\Scripts\activate
 
 3. Install Dependencies
 pip install -r requirements.txt
