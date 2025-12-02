@@ -1,0 +1,5 @@
+src\data\inspect_db.py:5: error: Library stubs not installed for "pandas"  [import-untyped]
+src\data\inspect_db.py:5: note: Hint: "python3 -m pip install pandas-stubs"
+src\data\inspect_db.py:5: note: (or run "mypy --install-types" to install all missing stub packages)
+src\data\inspect_db.py:5: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+Found 1 error in 1 file (checked 7 source files)

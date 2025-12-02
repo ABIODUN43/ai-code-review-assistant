@@ -1,0 +1,75 @@
+[
+  {
+    "code": "def add(a,b):return a+b",
+    "tool_findings": [
+      {"tool": "flake8", "message": "E231 missing whitespace after ','"}
+    ],
+    "expected_feedback": "Add a space after commas in the parameter list for better readability: 'def add(a, b): return a + b'."
+  },
+  {
+    "code": "def compute(x):\n    if x > 10:\n        print('Large')\n    else:\n        print('Small')",
+    "tool_findings": [
+      {"tool": "pylint", "message": "Missing function or method docstring (C0116)"}
+    ],
+    "expected_feedback": "Add a docstring to describe what the 'compute' function does and its expected input/output."
+  },
+  {
+    "code": "password = input('Enter password: ')\neval(password)",
+    "tool_findings": [
+      {"tool": "bandit", "message": "Use of eval() detected (B307)"}
+    ],
+    "expected_feedback": "Avoid using eval() with user input. It can execute arbitrary code — use safer parsing methods instead."
+  },
+  {
+    "code": "def divide(a: int, b: int):\n    return a / b",
+    "tool_findings": [
+      {"tool": "mypy", "message": "Missing return type annotation for function"}
+    ],
+    "expected_feedback": "Add a return type hint to clarify what the function returns, e.g., 'def divide(a: int, b: int) -> float:'."
+  },
+  {
+    "code": "def process_data(df):\n    result = df.groupby('col').sum()\n    return result",
+    "tool_findings": [
+      {"tool": "pylint", "message": "Missing function docstring"},
+      {"tool": "mypy", "message": "Function is missing a type annotation for parameter 'df'"}
+    ],
+    "expected_feedback": "Add a docstring describing what 'process_data' does and type hints for parameters and return values."
+  },
+  {
+    "code": "for i in range(0, len(items)):\n    print(items[i])",
+    "tool_findings": [
+      {"tool": "pylint", "message": "Consider using enumerate instead of range(len(...)) (C0200)"}
+    ],
+    "expected_feedback": "Replace the loop with 'for i, item in enumerate(items):' for cleaner and more Pythonic iteration."
+  },
+  {
+    "code": "def fetch_user(id):\n    query = f'SELECT * FROM users WHERE id = {id}'\n    cursor.execute(query)",
+    "tool_findings": [
+      {"tool": "bandit", "message": "Possible SQL injection via string formatting (B608)"}
+    ],
+    "expected_feedback": "Avoid building SQL queries via f-strings. Use parameterized queries to prevent SQL injection vulnerabilities."
+  },
+  {
+    "code": "def calc_area(radius):\n    return 3.14 * radius * radius",
+    "tool_findings": [
+      {"tool": "flake8", "message": "W291 trailing whitespace"},
+      {"tool": "pylint", "message": "Missing module docstring"}
+    ],
+    "expected_feedback": "Remove trailing whitespace and add a brief module-level docstring describing this file’s purpose."
+  },
+  {
+    "code": "def greet(name):\n    print('Hello ' + name)",
+    "tool_findings": [
+      {"tool": "flake8", "message": "E999 IndentationError: unexpected indent"}
+    ],
+    "expected_feedback": "Fix indentation to follow PEP8 standards. Ensure consistent use of 4 spaces per indentation level."
+  },
+  {
+    "code": "def factorial(n):\n    if n == 1:\n        return 1\n    else:\n        return n * factorial(n - 1)",
+    "tool_findings": [
+      {"tool": "pylint", "message": "R1705 unnecessary 'else' after 'return'"},
+      {"tool": "mypy", "message": "Missing type annotations for 'n' and return value"}
+    ],
+    "expected_feedback": "You can remove the 'else' after 'return' and add type hints: 'def factorial(n: int) -> int:'."
+  }
+]

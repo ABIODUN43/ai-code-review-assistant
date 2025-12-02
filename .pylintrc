@@ -76,4 +76,3 @@ min-similarity-lines=8
 # Sort imports in a readable way.
 known-standard-library=sys,os,datetime,sqlite3,unittest
 known-third-party=pandas,numpy,pytest
-known-first-party=src

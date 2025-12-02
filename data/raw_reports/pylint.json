@@ -1,0 +1,15 @@
+[
+    {
+        "type": "error",
+        "module": "C:\\Users\\user\\code-review-assistant\\ai-code-review-assistant\\.pylintrc",
+        "obj": "",
+        "line": 1,
+        "column": 0,
+        "endLine": null,
+        "endColumn": null,
+        "path": ".pylintrc",
+        "symbol": "unrecognized-option",
+        "message": "Unrecognized option found: known-first-party",
+        "message-id": "E0015"
+    }
+]
