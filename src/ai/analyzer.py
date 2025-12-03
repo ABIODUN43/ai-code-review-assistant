@@ -7,7 +7,7 @@ Combines static (rule-based) and AI feedback into categorized suggestions.
 import json
 import logging
 from typing import List, Dict, Any
-from ai_feedback.generate_feedback import generate_feedback
+from src.ai_feedback.generate_feedback import generate_feedback
 
 
 logger = logging.getLogger("ai_analyzer")
@@ -71,8 +71,15 @@ def analyze_code_with_ai(code: str, issues: List[str]) -> Dict[str, Any]:
     """
     logger.info("Running AI analyzer...")
 
+    # Convert issues to dict format if user/tool passed simple strings
+    normalized_issues = [
+        issue if isinstance(issue, dict)
+        else {"text": issue, "severity": "medium"}
+        for issue in issues
+    ]
+
     # Step 1: Get AI feedback
-    ai_feedback = generate_feedback(code, issues)
+    ai_feedback = generate_feedback(code, normalized_issues)
 
     # Step 2: Merge rule-based + AI findings
     all_suggestions = []
