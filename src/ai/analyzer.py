@@ -14,11 +14,15 @@ logger = logging.getLogger("ai_analyzer")
 logging.basicConfig(level=logging.INFO)
 
 
-def categorize_suggestion(text: str) -> str:
+def categorize_suggestion(issue: dict | str) -> str:
     """
     Simple keyword-based categorization of suggestions.
     Later can be replaced with an ML classifier.
     """
+    if isinstance(issue, dict):
+        text = issue.get("text", "")
+    else:
+        text = str(issue)
     text_lower = text.lower()
     if any(
         k in text_lower
@@ -64,7 +68,10 @@ def categorize_suggestion(text: str) -> str:
     return "general"
 
 
-def analyze_code_with_ai(code: str, issues: List[str]) -> Dict[str, Any]:
+def analyze_code_with_ai(
+        code: str,
+        issues: List[Dict[str, Any]]
+) -> Dict[str, Any]:
     """
     Combines AI feedback with rule-based issues.
     Returns categorized results.
@@ -72,11 +79,18 @@ def analyze_code_with_ai(code: str, issues: List[str]) -> Dict[str, Any]:
     logger.info("Running AI analyzer...")
 
     # Convert issues to dict format if user/tool passed simple strings
-    normalized_issues = [
-        issue if isinstance(issue, dict)
-        else {"text": issue, "severity": "medium"}
-        for issue in issues
-    ]
+    normalized_issues = []
+    for issue in issues:
+        if isinstance(issue, dict):
+            normalized_issues.append({
+                "text": issue.get("text", ""),
+                "severity": issue.get("severity", "medium"),
+                "tool": issue.get("tool", "static")
+            })
+        else:
+            normalized_issues.append(
+                {"text": str(issue), "severity": "medium"}
+            )
 
     # Step 1: Get AI feedback
     ai_feedback = generate_feedback(code, normalized_issues)
@@ -85,12 +99,12 @@ def analyze_code_with_ai(code: str, issues: List[str]) -> Dict[str, Any]:
     all_suggestions = []
 
     # From rule-based
-    for issue in issues:
+    for issue in normalized_issues:
         all_suggestions.append({
-            "source": "rule_based",
-            "text": issue,
+            "source": issue.get("tool", "rule_based"),
+            "text": issue.get("text", ""),
             "category": categorize_suggestion(issue),
-            "severity": "medium"
+            "severity": issue.get("severity", "medium")
         })
 
     # From AI feedback
@@ -138,10 +152,14 @@ if __name__ == "__main__":
     """
 
     sample_issues = [
-        "Code does not follow PEP8 naming conventions.",
-        "Inefficient iteration using range(len(data)).",
-        "Possible bug if data contains non-numeric types.",
-        "Missing type hints for parameters and return value."
+        {"text": "Code does not follow PEP8 naming conventions.",
+            "severity": "medium"},
+        {"text": "Inefficient iteration using range(len(data)).",
+            "severity": "medium"},
+        {"text": "Possible bug if data contains non-numeric types.",
+            "severity": "medium"},
+        {"text": "Missing type hints for parameters and return value.",
+            "severity": "medium"}
     ]
 
     analysis = analyze_code_with_ai(sample_code, sample_issues)
